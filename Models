@@ -1,0 +1,33 @@
+Sono gli stessi modelli presenti nell'excel su Teams, con i path di LMstudio.
+
+CLINICAL MODEL
+BioMistral-7B: MaziyarPanahi/BioMistral-7B-GGUF
+Meditron-7B: TheBloke/meditron-7B-GGUF
+Meditron-70B
+MedPalm
+MedPalm2: mradermacher/Llama-3.1-MedPalm2-imitate-8B-Instruct-GGUF
+BioClinRoBERTa
+PubMedGPT
+ChatDoctor: mradermacher/llama-3-8b-chat-doctor-GGUF
+MedAlpaca-7B
+MedAlpaca-13B: TheBloke/medalpaca-13B-GGUF
+ClinicalCamel
+Camel-Platypus2-70b
+qCammel-13: TheBloke/qCammel-13-GGUF
+qCammel-70
+BiomedCLIP
+BioMedLM
+BioGPT
+BioGPT-Large
+
+ITALIAN MODEL
+LLaMA 3-8B-Instruct: QuantFactory/Meta-Llama-3-8B-Instruct-GGUF
+LLaMAntino 3-8B: swap-uniba/LLaMAntino-3-ANITA-8B-Inst-DPO-ITA_GGUF
+Minerva 3B-base-v1.0: antoste/Minerva-3B-base-v1.0-IQ3_M-GGUF
+Zefiro 7B-base-ITA: RichardErkhov/giux78_-_zefiro-7b-beta-ITA-v0.1-gguf
+
+MULTILINGUAL MODEL
+Google’s Gemini Pro 1.0
+Google’s Gemini Pro 1.5
+Huatuo
+

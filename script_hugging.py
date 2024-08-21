@@ -9,7 +9,7 @@ def clean_text(text):
 
 def main(excel_path, category, model):
     # Carica il modello da Hugging Face
-    qa_pipeline = pipeline("question-answering", model="MaziyarPanahi/BioMistral-7B-GGUF")
+    text_gen_pipeline = pipeline("text-generation", model="BioMistral/BioMistral-7B")
 
     excel_file = pd.ExcelFile(excel_path)
     sheet_names = excel_file.sheet_names 
@@ -52,30 +52,24 @@ def main(excel_path, category, model):
                 print(f"Errore: La risposta corretta '{row['Correct Answer']}' non corrisponde a nessuna delle opzioni.")
                 continue
 
-            # Prepara il contesto e la domanda per il modello
-            context = "\n".join([f"{letter}: {text}" for letter, text in answers.items()])
-            qa_input = {
-                'question': question,
-                'context': context
-            }
+            # Prepara il contesto per il modello di text-generation
+            content = f"""Di seguito è riportata una domanda attinente al dominio medico. Sei un esperto di domande a risposta multipla nell'ambito clinico. Scegli la risposta corretta tra le cinque opzioni disponibili. \n
+            Categoria Medica: {category}\n
+            Domanda Medica: {question}\n"""
+            for letter, text in answers.items():
+                content += f"{letter}: {text}\n"
+            content += """\nIstruzione:
+            Restituisci il tuo risultato in formato JSON contenente un campo 'answer' che indica la lettera corrispondente alla risposta corretta (A, B, C, D oppure E). Il campo non può mai essere vuoto."""
 
+            messages = [{"role": "user", "content": content}]
+            
             try:
-                response = qa_pipeline(qa_input)
-                model_answer = response['answer'].strip()
+                response = text_gen_pipeline(messages, max_length=4096)
+                generated_text = response[0]['generated_text']
+                model_answer = eval(generated_text)['answer'].strip()
 
                 # Valuta la risposta del modello
-                model_answer_letter = None
-                for letter, text in answers.items():
-                    if clean_text(text).startswith(clean_text(model_answer)):
-                        model_answer_letter = letter
-                        break
-
-                if model_answer_letter is None:
-                    print(f"Errore: La risposta del modello '{model_answer}' non corrisponde a nessuna delle opzioni.")
-                    continue
-
-                # Confronta la risposta del modello con la risposta corretta
-                is_correct = model_answer_letter == correct_answer_text_display[0]
+                is_correct = model_answer == correct_answer_text_display[0]
 
                 # Aggiungi i risultati alla lista
                 results.append({
@@ -84,7 +78,7 @@ def main(excel_path, category, model):
                     'Models': model,
                     'Question': question,
                     'Correct Answer': correct_answer_text_display,
-                    'Model Answer': model_answer_letter,
+                    'Model Answer': model_answer,
                     'Percentage Correct': percentage_correct,
                     'Is Correct': is_correct,
                 })

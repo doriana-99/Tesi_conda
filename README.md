@@ -2,13 +2,13 @@
 
 ## Introduzione
 
-Questo script esegue esperimenti sul task Multiple Choice utilizzando un file Excel come input. Lo script invia richieste a un local server su porto 1234 per ottenere risposte del modello e confronta le risposte con le risposte corrette.
+Questo script esegue esperimenti sul task Multiple Choice utilizzando un file Excel come input. Lo script sfrutta un modello di generazione del testo (text-generation) per determinare la risposta corretta e confrontarla con quella fornita nel file.
 
 ## Prerequisiti
 
 - [Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
 - [Python 3.8](https://www.python.org/downloads/release/python-380/)
-- [LM Studio](https://lmstudio.ai/)
+- [Hugging Face Transformers](https://huggingface.co/docs/transformers/it/index)
 
 ## Installazione
 
@@ -22,7 +22,7 @@ Questo script esegue esperimenti sul task Multiple Choice utilizzando un file Ex
 
 ## Utilizzo
 
-1. Prima di eseguire lo script, è necessario avviare il modello sul portale 1234 utilizzando LM Studio. Assicurati che il server del modello sia in esecuzione all'indirizzo http://localhost:1234/v1/chat/completions (endpoint di LMstudio).
+1. Prima di eseguire lo script, assicurati che il modello specificato sia configurato correttamente. In questo esempio, lo script utilizza il modello BioMistral/BioMistral-7B della piattaforma Hugging Face. 
 
 2. Esegui lo script passando il percorso del file Excel, la categoria e il modello come argomenti:
 
@@ -35,4 +35,4 @@ path/to/DataExtraction.xlsx: Percorso al file Excel.
 
 ## Output
 
-I risultati verranno salvati come file CSV con il nome del foglio e del modello.
+I risultati verranno salvati in un file CSV per ogni foglio del file Excel, con il nome del foglio e del modello specificati nel nome del file.

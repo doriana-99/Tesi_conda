@@ -22,7 +22,7 @@ Questo script esegue esperimenti sul task Multiple Choice utilizzando un file Ex
 
 ## Utilizzo
 
-1. Prima di eseguire lo script, assicurati che il modello specificato sia configurato correttamente. In questo esempio, lo script utilizza il modello BioMistral/BioMistral-7B della piattaforma Hugging Face. 
+1. Prima di eseguire lo script, assicurati che il modello specificato sia configurato correttamente. Verifica di avere un modello di generazione del testo pronto per l'uso. Questo script utilizza la pipeline text-generation di Hugging Face. 
 
 2. Esegui lo script passando il percorso del file Excel, la categoria e il modello come argomenti:
 

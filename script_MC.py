@@ -3,7 +3,7 @@ import requests
 import json
 import re
 
-excel_path = r'C:\Users\traet\Desktop\TESI\Dataset\DataExtraction\DataExtraction_limited_small.xlsx'
+excel_path = r'C:\Users\traet\Desktop\TESI\Dataset\DataExtraction\DataExtraction.xlsx'
 
 # Endpoint
 base_url = "http://localhost:1234/v1/chat/completions"

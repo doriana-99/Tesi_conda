@@ -55,6 +55,13 @@ BioMedGPT: MaziyarPanahi/BioMedGPT-LM-7B-GGUF (LMstudio)
 Asherah Multimodal: https://huggingface.co/ResplendentAI/Asherah_7B
 Asherah Multimodal: mradermacher/Asherah_Multimodal_7B-GGUF (LMstudio)
 
+LLaVa: https://huggingface.co/PsiPi/liuhaotian_llava-v1.5-13b-GGUF (LMstudio)													
+
+Obsidian: https://huggingface.co/NousResearch/Obsidian-3B-V0.5 	
+Obsidian: https://huggingface.co/nisten/obsidian-3b-multimodal-q6-gguf (LMstudio)												
+
+
+
 
 ***70B params
 

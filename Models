@@ -5,7 +5,7 @@ BioMistral-7B: MaziyarPanahi/BioMistral-7B-GGUF (LMstudio)
 
 Meditron-7B: https://huggingface.co/epfl-llm/meditron-7b
 Meditron-7B: TheBloke/meditron-7B-GGUF (LMstudio)
-Meditron-70B: https://huggingface.co/epfl-llm/meditron-70b 
+Meditron-70B: https://huggingface.co/epfl-llm/meditron-70b ***
 
 MedPalm2: https://huggingface.co/Laim/Llama-3.1-MedPalm2-imitate-8B-Instruct
 MedPalm2: mradermacher/Llama-3.1-MedPalm2-imitate-8B-Instruct-GGUF (LMstudio)
@@ -21,11 +21,11 @@ MedAlpaca-13B: TheBloke/medalpaca-13B-GGUF (LMstudio)
 
 ClinicalCamel: https://huggingface.co/wanglab/ClinicalCamel-70B  
 
-Camel-Platypus2-70b: https://huggingface.co/garage-bAInd/Camel-Platypus2-70B 
+Camel-Platypus2-70b: https://huggingface.co/garage-bAInd/Camel-Platypus2-70B ***
 
 qCammel-13:https://huggingface.co/augtoma/qCammel-13 
 qCammel-13: TheBloke/qCammel-13-GGUF (LMstudio)
-qCammel-70: https://huggingface.co/augtoma/qCammel-70-x 
+qCammel-70: https://huggingface.co/augtoma/qCammel-70-x ***
 
 BiomedCLIP: https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224 
 
@@ -54,5 +54,8 @@ BioMedGPT: MaziyarPanahi/BioMedGPT-LM-7B-GGUF (LMstudio)
 
 Asherah Multimodal: https://huggingface.co/ResplendentAI/Asherah_7B
 Asherah Multimodal: mradermacher/Asherah_Multimodal_7B-GGUF (LMstudio)
+
+
+***70B params
 
 

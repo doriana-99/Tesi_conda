@@ -1,30 +1,46 @@
+----------------TASK MC-----------------------------
+
+BioMistral-7B: https://huggingface.co/BioMistral/BioMistral-7B
+Meditron-7B: https://huggingface.co/epfl-llm/meditron-7b
+LLaMA 3-8B-Instruct: https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct
+MedAlpaca-7B: https://huggingface.co/medalpaca/medalpaca-7b 
+BioGPT: https://huggingface.co/microsoft/biogpt
+
+----------------TASK MULTIMODAL---------------------
+
+BLIP-vqa: https://huggingface.co/Salesforce/blip-vqa-base
+GIT-base-textqa: 	https://huggingface.co/microsoft/git-base-textvqa 
+
+----------------TASK QA-----------------------------
+
+----------------TASK FILL-MASK----------------------
+
+----------------TASK CLASSIFICATION-----------------
+
+
+MODELS:
+
 CLINICAL MODEL
 
 BioMistral-7B: https://huggingface.co/BioMistral/BioMistral-7B
-BioMistral-7B: MaziyarPanahi/BioMistral-7B-GGUF (LMstudio)
 
 Meditron-7B: https://huggingface.co/epfl-llm/meditron-7b
-Meditron-7B: TheBloke/meditron-7B-GGUF (LMstudio)
 Meditron-70B: https://huggingface.co/epfl-llm/meditron-70b ***
 
 MedPalm2: https://huggingface.co/Laim/Llama-3.1-MedPalm2-imitate-8B-Instruct
-MedPalm2: mradermacher/Llama-3.1-MedPalm2-imitate-8B-Instruct-GGUF (LMstudio)
 
 PubMedGPT: https://huggingface.co/ell-hol/pubmed-gpt2
 
 ChatDoctor: https://huggingface.co/mncai/chatdoctor 
-ChatDoctor: mradermacher/llama-3-8b-chat-doctor-GGUF (LMstudio)
 
 MedAlpaca-7B: https://huggingface.co/medalpaca/medalpaca-7b 
 MedAlpaca-13B: https://huggingface.co/medalpaca/medalpaca-13b
-MedAlpaca-13B: TheBloke/medalpaca-13B-GGUF (LMstudio)
 
 ClinicalCamel: https://huggingface.co/wanglab/ClinicalCamel-70B  
 
 Camel-Platypus2-70b: https://huggingface.co/garage-bAInd/Camel-Platypus2-70B ***
 
 qCammel-13:https://huggingface.co/augtoma/qCammel-13 
-qCammel-13: TheBloke/qCammel-13-GGUF (LMstudio)
 qCammel-70: https://huggingface.co/augtoma/qCammel-70-x ***
 
 BiomedCLIP: https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224 
@@ -37,28 +53,16 @@ BioGPT-Large: https://huggingface.co/microsoft/BioGPT-Large
 
 ITALIAN MODEL
 LLaMA 3-8B-Instruct: https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct
-LLaMA 3-8B-Instruct: QuantFactory/Meta-Llama-3-8B-Instruct-GGUF (LMstudio)
 
 LLaMAntino 3-8B: https://huggingface.co/swap-uniba/LLaMAntino-3-ANITA-8B-Inst-DPO-ITA
-LLaMAntino 3-8B: swap-uniba/LLaMAntino-3-ANITA-8B-Inst-DPO-ITA_GGUF (LMstudio)
 
 Minerva 3B-base-v1.0: https://huggingface.co/sapienzanlp/Minerva-3B-base-v1.0
-Minerva 3B-base-v1.0: antoste/Minerva-3B-base-v1.0-IQ3_M-GGUF (LMstudio)
 
 Zefiro 7B-base-ITA: https://huggingface.co/giux78/zefiro-7b-beta-ITA-v0.1
-Zefiro 7B-base-ITA: RichardErkhov/giux78_-_zefiro-7b-beta-ITA-v0.1-gguf (LMstudio)
 
 MULTIMODAL MODEL
-BioMedGPT: https://huggingface.co/PharMolix/BioMedGPT-LM-7B
-BioMedGPT: MaziyarPanahi/BioMedGPT-LM-7B-GGUF (LMstudio)
-
-Asherah Multimodal: https://huggingface.co/ResplendentAI/Asherah_7B
-Asherah Multimodal: mradermacher/Asherah_Multimodal_7B-GGUF (LMstudio)
-
-LLaVa: https://huggingface.co/PsiPi/liuhaotian_llava-v1.5-13b-GGUF (LMstudio)													
-
-Obsidian: https://huggingface.co/NousResearch/Obsidian-3B-V0.5 	
-Obsidian: https://huggingface.co/nisten/obsidian-3b-multimodal-q6-gguf (LMstudio)												
+BLIP-vqa: https://huggingface.co/Salesforce/blip-vqa-base							
+GIT-base-textqa: 	https://huggingface.co/microsoft/git-base-textvqa 
 
 
 

@@ -2,7 +2,7 @@
 
 ## Introduzione
 
-Questo script esegue esperimenti sul task Multiple Choice utilizzando un file Excel come input. Lo script sfrutta un modello di generazione del testo (text-generation) per determinare la risposta corretta e confrontarla con quella fornita nel file.
+Questo script esegue esperimenti sul task Multiple Choice utilizzando un file Excel come input. Lo script sfrutta un modello di generazione del testo (text-generation) per determinare la risposta corretta e confrontarla con quella fornita nel file. Inoltre, è possibile attivare la quantizzazione del modello per ridurre il consumo di memoria.
 
 ## Prerequisiti
 
@@ -27,12 +27,13 @@ Questo script esegue esperimenti sul task Multiple Choice utilizzando un file Ex
 2. Esegui lo script passando il percorso del file Excel, la categoria e il modello come argomenti:
 
     ```bash
-    python script_ITA.py path/to/DataExtraction.xlsx "Categoria" "Modello"
+    python script_MC_hugging.py --excel_path "path/to/DataExtraction.xlsx" --category "Categoria" --model "Modello" [--quantize]
 
-path/to/DataExtraction.xlsx: Percorso al file Excel.
-"Categoria": Categoria da filtrare.
-"Modello": Nome del modello da utilizzare.
+--excel_path "path/to/DataExtraction.xlsx": Percorso al file Excel.
+--category "Categoria": Categoria da filtrare. Se vuoi processare tutti i fogli, usa all.
+--model "Modello": Nome del modello da utilizzare.
+--quantize: (Opzionale) Attiva la quantizzazione a 8 bit del modello per ridurre l'uso della memoria (richiede una GPU).
 
 ## Output
 
-I risultati verranno salvati in un file CSV per ogni foglio del file Excel, con il nome del foglio e del modello specificati nel nome del file.
+I risultati verranno salvati in un file JSON per ogni foglio del file Excel, con il nome del foglio e del modello specificati nel nome del file.

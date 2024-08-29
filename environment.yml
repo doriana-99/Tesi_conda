@@ -5,6 +5,9 @@ dependencies:
   - python=3.8
   - pandas
   - requests
+  - tqdm
   - pip
   - pip:
+      - torch
       - transformers
+      - accelerate

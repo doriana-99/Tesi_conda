@@ -1,15 +1,16 @@
-name: myenv
+name: my-env
 channels:
-  - defaults
   - conda-forge
 dependencies:
-  - python=3.8
+  - python=3.10
+  - pip
   - pandas
   - tqdm
-  - pip
+  - torch
   - pip:
-      - transformers
-      - torch
-      - accelerate
-      - auto-gpt
-      - bitsandbytes
+    - transformers
+    - accelerate
+    - bitsandbytes
+    - triton
+    - tiktoken
+    - flash-attn

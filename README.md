@@ -27,7 +27,7 @@ Questo script esegue esperimenti sul task Multiple Choice utilizzando un file Ex
 2. Esegui lo script passando il percorso del file Excel, la categoria e il modello come argomenti:
 
     ```bash
-    python script_MC_hugging.py --excel_path "path/to/DataExtraction.xlsx" --category "Categoria" --model "Modello" [--quantize]
+    python script_MC_hugging_quantization.py --excel_path "path/to/DataExtraction.xlsx" --category "Categoria" --model "Modello" [--quantize]
 
 --excel_path "path/to/DataExtraction.xlsx": Percorso al file Excel.
 --category "Categoria": Categoria da filtrare. Se vuoi processare tutti i fogli, usa all.

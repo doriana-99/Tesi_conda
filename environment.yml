@@ -11,4 +11,5 @@ dependencies:
       - transformers
       - torch
       - accelerate
+      - auto-gpt
       - bitsandbytes

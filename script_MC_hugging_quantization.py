@@ -146,9 +146,9 @@ def main(excel_path, category, model):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Esegui lo script per elaborare un file Excel e generare le risposte.")
-    parser.add_argument("excel_path", help="Percorso del file Excel.")
-    parser.add_argument("category", help="Nome del foglio di lavoro o 'all' per tutti i fogli.")
-    parser.add_argument("model", help="Nome del modello da utilizzare.")
+    parser.add_argument('--excel_path',"excel_path", help="Percorso del file Excel.")
+    parser.add_argument('--category',"category", help="Nome del foglio di lavoro o 'all' per tutti i fogli.")
+    parser.add_argument('--model',"model", help="Nome del modello da utilizzare.")
 
     args = parser.parse_args()
     main(args.excel_path, args.category, args.model)

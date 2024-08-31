@@ -1,13 +1,14 @@
 name: myenv
 channels:
   - defaults
+  - conda-forge
 dependencies:
   - python=3.8
   - pandas
-  - requests
   - tqdm
   - pip
   - pip:
-      - torch
       - transformers
+      - torch
       - accelerate
+      - bitsandbytes

@@ -1,42 +1,38 @@
 import pandas as pd
-import argparse
-from transformers import pipeline, AutoModelForCausalLM, AutoTokenizer
+from transformers import pipeline, BitsAndBytesConfig
 from tqdm import tqdm
 import json
 import os
-from concurrent.futures import ThreadPoolExecutor
-import torch
+import argparse
 
 def clean_text(text):
     if pd.isna(text):
         return ''
-    return str(text).strip().lower().replace('\n', ' ').replace(";", "")
+    return str(text).strip().lower().replace('\n', ' ')
 
-def load_model(model_name, quantize):
-    print(f"Loading model '{model_name}' with quantization set to {quantize}...")
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    
-    if quantize:
-        model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16, load_in_8bit=True, device_map="auto")
-    else:
-        model = AutoModelForCausalLM.from_pretrained(model_name)
-    
-    text_gen_pipeline = pipeline("text-generation", model=model, tokenizer=tokenizer, device=0)
-    return text_gen_pipeline
+def main(excel_path, category, model):
+    # Configura la quantizzazione
+    quantize = BitsAndBytesConfig(load_in_8bit=True)
 
-def process_sheet(df, category, model, quantize, json_filename):
-    text_gen_pipeline = load_model(model, quantize)
+    # Carica il modello da Hugging Face con quantizzazione
+    text_gen_pipeline = pipeline("text-generation", model=model, quantization_config=quantize)
+
+    df = pd.read_excel(excel_path, sheet_name=category)
     
+    # Controlla se tutte le colonne richieste esistono
     required_columns = ['Category', 'Question', 'AnswerA', 'AnswerB', 'AnswerC', 'AnswerD', 'AnswerE', 'Correct Answer', 'Percentage Correct']
     if not all(col in df.columns for col in required_columns):
-        print(f"Error: One or more required columns are missing in sheet '{category}'.")
+        print(f"Errore: Una o più colonne richieste sono mancanti nel foglio '{category}'.")
         return
 
+    json_filename = f"{category.replace(' ', '-')}_{model.split('/')[-1]}_MC.json"
+    
+    # Assicurati che il file JSON esista
     if not os.path.exists(json_filename):
         with open(json_filename, 'w') as f:
-            json.dump([], f)
+            json.dump([], f)  # Inizializza con una lista vuota
 
-    def process_row(row):
+    for _, row in tqdm(df.iterrows(), total=len(df)):
         question = row['Question']
         answers = {
             'A': clean_text(row['AnswerA']),
@@ -45,14 +41,11 @@ def process_sheet(df, category, model, quantize, json_filename):
             'D': clean_text(row['AnswerD']),
             'E': clean_text(row['AnswerE'])
         }
-
         answer2key = {v: k for k, v in answers.items()}
+
         correct_answer_text = clean_text(row['Correct Answer'])
-        try:
-            correct_answer_key = answer2key[correct_answer_text]
-        except:
-            print(f"Error in processing question: {question}")
-            return None
+        correct_answer_key = answer2key.get(correct_answer_text, 'Unknown')
+        percentage_correct = row['Percentage Correct']
 
         content = f"""Di seguito è riportata una domanda attinente al dominio medico. Sei un esperto di domande a risposta multipla nell'ambito clinico. Scegli la risposta corretta tra le cinque opzioni disponibili. \n
             Categoria Medica: {category}\n
@@ -65,18 +58,10 @@ def process_sheet(df, category, model, quantize, json_filename):
             Istruzione:
             Restituisci il tuo risultato in formato JSON contenente un campo 'answer' che indica la lettera corrispondente alla risposta corretta (A, B, C, D oppure E). Il campo non può mai essere vuoto."""
 
-        if model == "epfl-llm/meditron-7b":
-            messages = content
-            max_length = 2048
-        else:
-            messages = [{"role": "user", "content": content}]
-            max_length = 4096
+        messages = [{"role": "user", "content": content}]
         try:
-            response = text_gen_pipeline(messages, max_length=max_length)
-            if model == '':
-                generated_text = response[0]['generated_text']
-            else:
-                generated_text = response[0]['generated_text'][-1]['content']
+            response = text_gen_pipeline(messages, max_length=4096)
+            generated_text = response[0]['generated_text']
             model_answer = eval(generated_text)['answer'].strip()
             is_correct = model_answer == correct_answer_key
 
@@ -92,49 +77,28 @@ def process_sheet(df, category, model, quantize, json_filename):
                 'Answer E': answers['E'],
                 'Correct Answer': correct_answer_key,
                 'Model Answer': model_answer,
-                'Percentage Correct': row['Percentage Correct'],
+                'Percentage Correct': percentage_correct,
                 'Is Correct': is_correct,
             }
-            return result
+            
+            # Aggiungi il risultato al file JSON
+            with open(json_filename, 'r+') as f:
+                data = json.load(f)
+                data.append(result)
+                f.seek(0)
+                json.dump(data, f, indent=4)
+            
+            print(result)
         except Exception as e:
-            print(f"Error in model request: {e}")
-            return None
+            print(f"Errore nella richiesta del modello: {e}")
 
-    results = []
-    for i, row in tqdm(df.iterrows(), total=len(df)):
-        result = process_row(row)
-        results.append(result)
-
-    with open(json_filename, 'w') as f:
-        json.dump(results, f, indent=4)
-
-    print(f'Updated results for sheet "{category}" in {json_filename}')
-
-def main(excel_path, category, model, quantize):
-    if category.lower() == "all":
-        sheets = pd.read_excel(excel_path, sheet_name=None)
-        for sheet_name, df in sheets.items():
-            json_filename = f"{sheet_name.replace(' ', '-').replace(',','')}_{model.split('/')[-1]}_MC.json"
-            if os.path.exists(json_filename):
-                print(f"Skipping sheet '{sheet_name}' as output file '{json_filename}' already exists.")
-            else:
-                print(f"Processing sheet '{sheet_name}'...")
-                process_sheet(df, sheet_name, model, quantize, json_filename)
-
-    else:
-        df = pd.read_excel(excel_path, sheet_name=category)
-        json_filename = f"{category.replace(' ', '-').replace(',','')}_{model.split('/')[-1]}_MC.json"
-        if os.path.exists(json_filename):
-            print(f"Skipping sheet '{category}' as output file '{json_filename}' already exists.")
-        else:
-            process_sheet(df, category, model, quantize, json_filename)
+    print(f'Risultati aggiornati per il foglio "{category}" in {json_filename}')
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Run experiments on the model.')
-    parser.add_argument('--excel_path', type=str, help='Path to the Excel file')
-    parser.add_argument('--category', type=str, default='all', help='Category to filter or "all" to process all sheets')
-    parser.add_argument('--model', type=str, help='Model name')
-    parser.add_argument('--quantize', action='store_true', help='Quantize the model')
+    parser = argparse.ArgumentParser(description='Elaborazione dei dati con un modello di Hugging Face.')
+    parser.add_argument('--excel_path', type=str, required=True, help='Percorso al file Excel')
+    parser.add_argument('--category', type=str, required=True, help='Categoria del foglio da elaborare')
+    parser.add_argument('--model', type=str, required=True, help='Nome del modello di Hugging Face')
 
     args = parser.parse_args()
-    main(args.excel_path, args.category, args.model, args.quantize)
+    main(args.excel_path, args.category, args.model)

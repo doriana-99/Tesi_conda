@@ -5,6 +5,7 @@ from tqdm import tqdm
 import torch
 import json
 import os
+import re
 
 # Variabile globale per tenere traccia dello stato di inizializzazione del modello
 model_initialized = False
@@ -75,7 +76,7 @@ def process_sheet(df, category, model, json_filename, text_gen_pipeline):
                           top_k=50,
                           top_p=0.95
                       )
-            generated_text = response[0]['generated_text'][-1]['content'] #LLama 3.1 format
+            generated_text = response[0]['generated_text'][-1]['content'] 
             response_dict = json.loads(generated_text)
             model_answer = response_dict['answer']
 
@@ -105,14 +106,14 @@ def process_sheet(df, category, model, json_filename, text_gen_pipeline):
                 json.dump(data, f, indent=4)
 
         except Exception as e:
-            print(f"Errore nella richiesta al modello: {e}")
+            print(f"Error in model request: {e}")
 
-    print(f'Risultati aggiornati per il foglio "{category}" in {json_filename}')
+    print(f'Updated results for sheet "{category}" in {json_filename}')
 
 def initialize_model(model):
     global model_initialized, text_gen_pipeline
     if not model_initialized:
-        print("Inizializzazione del modello...")
+        print("Initializing the model...")
         text_gen_pipeline = pipeline("text-generation",
                                      model=model,
                                      model_kwargs={
@@ -121,7 +122,7 @@ def initialize_model(model):
                                       },
                                     )
         model_initialized = True
-        print("Modello inizializzato.")
+        print("Model initialized.")
 
 def main(excel_path, category, model):
     initialize_model(model)

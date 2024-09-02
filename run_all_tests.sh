@@ -4,9 +4,17 @@ EXCEL_PATH="path/to/DataExtraction.xlsx"
 
 # Definisci la lista dei modelli da testare
 MODELS=(
-    "Echelon-AI/Med-Qwen2-7B"
-    "swap-uniba/LLaMAntino-3-ANITA-8B-Inst-DPO-ITA"
-    "mii-community/zefiro-7b-base-ITA"
+    # mistral base: 
+    # mistral medico: BioMistral
+    "mii-community/zefiro-7b-base-ITA" # mistral italiano
+    
+    # gemma base: Gemma 
+    # gemma italiano: deep
+    # gemma medico: Shaleen123/gemma2-9b-medical
+    
+    # llama base: ok
+    # llama italiano: "swap-uniba/LLaMAntino-3-ANITA-8B-Inst-DPO-ITA"
+    # llama medico: 
 )
 
 # Definisci la lista delle categorie da testare

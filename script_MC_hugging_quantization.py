@@ -51,7 +51,7 @@ def process_sheet(df, category, model, json_filename, text_gen_pipeline):
             continue
         percentage_correct = row['Percentage Correct']
 
-        content = f"""Di seguito è riportata una domanda attinente al dominio medico di {category}. Sei un esperto di domande a risposta multipla nell'ambito clinico. Scegli la risposta corretta tra le cinque opzioni disponibili. \n
+        content = f"""Di seguito è riportata una domanda attinente al dominio medico. Sei un esperto di domande a risposta multipla nell'ambito clinico. Scegli la risposta corretta tra le cinque opzioni disponibili. \n
             Categoria Medica: {category}\n
             Domanda Medica: {question}\n
             A: {answers['A']}\n
@@ -59,13 +59,10 @@ def process_sheet(df, category, model, json_filename, text_gen_pipeline):
             C: {answers['C']}\n
             D: {answers['D']}\n
             E: {answers['E']}\n
-            Instruction:
-            Return the result containing an ‘answer’ field indicating the letter corresponding to the correct answer (A, B, C, D or E).
-            WITH ONLY NECESSARY THIS STRUCTURE:
-             {{"answer": "(letter corresponding to the correct answer)"}}
-            The field can never be empty.
-            """
+            Istruzione:
+            Restituisci il tuo risultato in formato JSON contenente un campo 'answer' che indica la lettera corrispondente alla risposta corretta (A, B, C, D oppure E). Il campo non può mai essere vuoto."""
 
+  
         messages = [{"role": "user", "content": content}]
         try:
             response = text_gen_pipeline(

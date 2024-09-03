@@ -7,14 +7,14 @@ MODELS=(
     "mistralai/Mistral-7B-Instruct-v0.1" # mistral base
     "mii-community/zefiro-7b-base-ITA" # mistral italiano
     #"BioMistral/BioMistral-7B" #mistral medico
+
+    "meta-llama/Meta-Llama-3-8B-Instruct" #llama base
+    "swap-uniba/LLaMAntino-3-ANITA-8B-Inst-DPO-ITA" #llama italiano
+    "ruslanmv/Medical-Llama3-8B" #llama medico 
    
     #"google/gemma-2-9b-it" #gemma base
     #gemma italiano: multilingual (?)
-    "Shaleen123/gemma2-9b-medical" #gemma medico: 
-    
-    "meta-llama/Meta-Llama-3-8B-Instruct" #llama base
-    "swap-uniba/LLaMAntino-3-ANITA-8B-Inst-DPO-ITA" #llama italiano
-    "johnsnowlabs/JSL-MedLlama-3-8B-v2.0" #llama medico 
+    "Shaleen123/gemma2-9b-medical" #gemma medico 
 )
 
 # Definisci la lista delle categorie da testare

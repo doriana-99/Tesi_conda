@@ -4,17 +4,17 @@ EXCEL_PATH="path/to/DataExtraction.xlsx"
 
 # Definisci la lista dei modelli da testare
 MODELS=(
-    # mistral base: 
-    # mistral medico: BioMistral
+    "mistralai/Mistral-7B-v0.1" # mistral base
     "mii-community/zefiro-7b-base-ITA" # mistral italiano
+    #"BioMistral/BioMistral-7B" #mistral medico
+   
+    #"google/gemma-2-9b-it" #gemma base
+    #gemma italiano: multilingual (?)
+    "Shaleen123/gemma2-9b-medical" #gemma medico: 
     
-    # gemma base: Gemma 
-    # gemma italiano: deep
-    # gemma medico: Shaleen123/gemma2-9b-medical
-    
-    # llama base: ok
-    # llama italiano: "swap-uniba/LLaMAntino-3-ANITA-8B-Inst-DPO-ITA"
-    # llama medico: 
+    "meta-llama/Meta-Llama-3-8B-Instruct" #llama base
+    "swap-uniba/LLaMAntino-3-ANITA-8B-Inst-DPO-ITA" #llama italiano
+    "johnsnowlabs/JSL-MedLlama-3-8B-v2.0" #llama medico 
 )
 
 # Definisci la lista delle categorie da testare

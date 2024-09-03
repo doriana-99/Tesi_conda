@@ -10,7 +10,7 @@ MODELS=(
 
     "meta-llama/Meta-Llama-3-8B-Instruct" #llama base
     "swap-uniba/LLaMAntino-3-ANITA-8B-Inst-DPO-ITA" #llama italiano
-    "ruslanmv/Medical-Llama3-8B" #llama medico 
+    "ContactDoctor/Bio-Medical-Llama-3-8B" #llama medico		
    
     #"google/gemma-2-9b-it" #gemma base
     #gemma italiano: multilingual (?)

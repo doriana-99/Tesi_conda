@@ -89,12 +89,7 @@ CATEGORIES=(
 for MODEL in "${MODELS[@]}"; do
     for CATEGORY in "${CATEGORIES[@]}"; do
         echo "Testing model: $MODEL on category: $CATEGORY"
-        python script.py "$EXCEL_PATH" "$CATEGORY" "$MODEL"
+        python script_MC_hugging_quantization.py --excel_path "$EXCEL_PATH" --category "$CATEGORY" --model "$MODEL"
     done
 done
 
-# Esecuzione su tutte le categorie per ogni modello
-for MODEL in "${MODELS[@]}"; do
-    echo "Testing model: $MODEL on all categories"
-    python script_MC_hugging_quantization.py "$EXCEL_PATH" "all" "$MODEL"
-done

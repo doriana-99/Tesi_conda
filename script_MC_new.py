@@ -130,4 +130,36 @@ def initialize_model(model):
                                      model_kwargs={
                                         "torch_dtype": torch.float16,
                                         "quantization_config": {"load_in_4bit": True}
-        
+                                      },
+                                    )
+        model_initialized = True
+        print("Model initialized.")
+
+def main(excel_path, category, model):
+    initialize_model(model)
+
+    if category.lower() == "all":
+        sheets = pd.read_excel(excel_path, sheet_name=None)
+        for sheet_name, df in sheets.items():
+            json_filename = f"{sheet_name.replace(' ', '-').replace(',','')}_{model.split('/')[-1]}_MC.json"
+            if os.path.exists(json_filename):
+                print(f"Saltato foglio '{sheet_name}' perché il file di output '{json_filename}' esiste già.")
+            else:
+                print(f"Elaborazione foglio '{sheet_name}'...")
+                process_sheet(df, sheet_name, model, json_filename, text_gen_pipeline)
+    else:
+        df = pd.read_excel(excel_path, sheet_name=category)
+        json_filename = f"{category.replace(' ', '-').replace(',','')}_{model.split('/')[-1]}_MC.json"
+        if os.path.exists(json_filename):
+            print(f"Saltato foglio '{category}' perché il file di output '{json_filename}' esiste già.")
+        else:
+            process_sheet(df, category, model, json_filename, text_gen_pipeline)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Esegui lo script per elaborare un file Excel e generare le risposte.")
+    parser.add_argument('--excel_path', help="Percorso del file Excel.")
+    parser.add_argument('--category', help="Nome del foglio di lavoro o 'all' per tutti i fogli.")
+    parser.add_argument('--model', help="Nome del modello da utilizzare.")
+
+    args = parser.parse_args()
+    main(args.excel_path, args.category, args.model)

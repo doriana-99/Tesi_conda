@@ -16,21 +16,6 @@ def clean_text(text):
         return ''
     return str(text).strip().lower().replace('\n', ' ').replace(";", "")
 
-def format_input(content, model):
-    # Verifica quale modello è in uso e formatta l'input di conseguenza
-    if model == "mistralai/Mistral-7B-Instruct-v0.1" or model == "mii-community/zefiro-7b-base-ITA" or model == "BioMistral/BioMistral-7B":
-        # Formattazione per modelli Mistral
-        formatted_content = f"""### Instruction:\n{content}\n### Response:"""
-    elif model == "meta-llama/Meta-Llama-3-8B-Instruct" or model == "swap-uniba/LLaMAntino-3-ANITA-8B-Inst-DPO-ITA" or model == "ContactDoctor/Bio-Medical-Llama-3-8B":
-        # Formattazione per modelli Llama
-        formatted_content = f"""<s>[INST] <<SYS>>\nYou are a medical expert. Provide the best answer.\n<</SYS>>\n{content} [/INST]"""
-    elif model == "google/gemma-2-9b-it" or model == "Shaleen123/gemma2-9b-medical":
-        # Formattazione per modelli Gemma
-        formatted_content = f"""<|startoftext|>\n{content}\n<|endoftext|>"""
-    else:
-        # Formattazione predefinita nel caso in cui il modello non sia riconosciuto
-        formatted_content = content
-    return formatted_content
 
 def process_sheet(df, category, model, json_filename, text_gen_pipeline):
     required_columns = ['Category', 'Question', 'AnswerA', 'AnswerB', 'AnswerC', 'AnswerD', 'AnswerE', 'Correct Answer', 'Percentage Correct']
@@ -75,19 +60,63 @@ def process_sheet(df, category, model, json_filename, text_gen_pipeline):
             E: {answers['E']}\n
             Istruzione:
             Restituisci il tuo risultato in formato JSON contenente un campo 'answer' che indica la lettera corrispondente alla risposta corretta (A, B, C, D oppure E). Il campo non può mai essere vuoto."""
-
-        formatted_content = format_input(content, model)
-        messages = [{"role": "user", "content": formatted_content}]
         
+        if model == "mistralai/Mistral-7B-Instruct-v0.1":
+            formatted_content = f"<s>[INST] {content} [/INST]</s>"
+            messages = [{"role": "user", "content": formatted_content}]
+            max_length = 2048
+        elif model == "mii-community/zefiro-7b-base-ITA":
+            sys_prompt = "Sei un assistente disponibile, rispettoso e onesto. " \
+                         "Rispondi sempre nel modo piu' utile possibile, pur essendo sicuro. " \
+                         "Le risposte non devono includere contenuti dannosi, non etici, razzisti, sessisti, tossici, pericolosi o illegali. " \
+                         "Assicurati che le tue risposte siano socialmente imparziali e positive. " \
+                         "Se una domanda non ha senso o non e' coerente con i fatti, spiegane il motivo invece di rispondere in modo non corretto. " \
+                         "Se non conosci la risposta a una domanda, non condividere informazioni false."
+            user_prompt = content 
+            messages = [
+                {'role': 'assistant', 'content': sys_prompt},
+                {'role': 'user', 'content': user_prompt}
+            ]
+            max_length = 2048
+        elif model == "BioMistral/BioMistral-7B":
+            messages = [{"role": "user", "content": content}]
+            max_length = 2048
+        elif model == "meta-llama/Meta-Llama-3-8B-Instruct":
+            formatted_content = f"""<s>[INST] <<SYS>>\nYou are a medical expert. Provide the best answer.\n<</SYS>>\n{content} [/INST]"""
+            messages = [{"role": "user", "content": formatted_content}]
+            max_length = 2048
+        elif model == "swap-uniba/LLaMAntino-3-ANITA-8B-Inst-DPO-ITA":
+            sys_prompt = "Tu sei un assistente medico esperto. Fornisci la migliore risposta possibile."
+            user_prompt = content
+            formatted_content = f"<|start_header_id|>system<|end_header_id|>\n{sys_prompt}<|eot_id|>\n<|start_header_id|>user<|end_header_id|>\n{user_prompt}<|eot_id|>\n<|start_header_id|>assistant<|end_header_id|>\n"
+            messages = [{"role": "user", "content": formatted_content}]
+            max_length = 2048
+        elif model == "ContactDoctor/Bio-Medical-Llama-3-8B":
+            sys_prompt = "You are an expert trained on healthcare and biomedical domain!"
+            messages = [
+                {"role": "system", "content": sys_prompt},
+                {"role": "user", "content": content}
+            ]
+            max_length = 2048
+        elif model == "google/gemma-2-9b-it":
+            messages = [{"role": "user", "content": content}]
+            max_length = 2048
+        elif model == "Shaleen123/gemma2-9b-medical":
+            messages = [{"role": "user", "content": content}]
+            max_length = 2048
+        else:
+            messages = [{"role": "user", "content": content}]
+            max_length = 4096
+
         try:
             response = text_gen_pipeline(
-                          messages,
-                          max_new_tokens=128,
-                          do_sample=True,
-                          temperature=0.7,
-                          top_k=50,
-                          top_p=0.95
-                      )
+                messages,
+                max_new_tokens=128,
+                do_sample=True,
+                temperature=0.7,
+                top_k=50,
+                top_p=0.95
+            )
             generated_text = response[0]['generated_text'][-1]['content'] 
             response_dict = json.loads(generated_text)
             model_answer = response_dict['answer']
@@ -136,6 +165,7 @@ def initialize_model(model):
         print("Model initialized.")
 
 def main(excel_path, category, model):
+    print("Sono in script_MC_new...")
     initialize_model(model)
 
     if category.lower() == "all":
@@ -157,9 +187,9 @@ def main(excel_path, category, model):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Esegui lo script per elaborare un file Excel e generare le risposte.")
-    parser.add_argument('--excel_path', help="Percorso del file Excel.")
-    parser.add_argument('--category', help="Nome del foglio di lavoro o 'all' per tutti i fogli.")
-    parser.add_argument('--model', help="Nome del modello da utilizzare.")
+    parser.add_argument('--excel_path', help="Percorso del file Excel.", required=True)
+    parser.add_argument('--category', help="Nome del foglio di lavoro o 'all' per tutti i fogli.", required=True)
+    parser.add_argument('--model', help="Nome del modello da utilizzare.", required=True)
 
     args = parser.parse_args()
     main(args.excel_path, args.category, args.model)

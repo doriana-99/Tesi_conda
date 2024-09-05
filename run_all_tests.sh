@@ -24,7 +24,7 @@ categories=(
      "Malattie dell'apparato cardiova"
      "Malattie dell'apparato respirat"
      "Malattie infettive"
-     "Medicina dello sport"
+     "Medicina dello sport "
      "Medicina d'emergenza-urgenza"
      "Medicina di comunità"
      "Medicina interna"
